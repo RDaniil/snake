@@ -18,6 +18,20 @@
     transition: background-color .5s;
 }
 
+.main div.scores {
+    width: 40px;
+    height: 20px;
+    float: left;
+    margin: 1px;
+    border: 1px solid green;
+    border-radius: 4px;
+    background-color: #fff;
+    text-align: right;
+    color: #666;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
 .main .line div.food {
     background-color: green;
     transition: background-color 2s;
