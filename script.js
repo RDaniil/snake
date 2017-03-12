@@ -33,15 +33,15 @@ var snakeGame = (function() {
         removeSnakeCells();
 
         checkForFood(newHeadCell);
-        addSnakeToCell(newHeadCell);
+        addObjToCell(newHeadCell, " snake");
         setCellStep(newHeadCell, currentStep);
 
         if (isFoodEaten) {
+            refreshScore(scores);
             spawnFood();
             isFoodEaten = false;
         }
 
-        refreshScore(scores);
         currentStep++;
         return true;
     }
@@ -52,7 +52,7 @@ var snakeGame = (function() {
 
     let checkForFood = headCell => {
         if (isFood(headCell)) {
-            removeFoodFromCell(headCell);
+            removeObjFromCell(headCell, "food");
             isFoodEaten = true;
             scores++;
         }
@@ -76,7 +76,7 @@ var snakeGame = (function() {
 
     let removeSnakeCells = () => {
         for (let snakeCell of getSnakeCells())
-            removeSnakeFromCell(snakeCell);
+            removeObjFromCell(snakeCell, "snake");
     }
 
     let isFood = cell => {
@@ -85,7 +85,6 @@ var snakeGame = (function() {
     }
 
     let getCell = (x, y) => {
-        //console.log("Get cell x " + x + " y " + y);
         // Можно находить элементы DOM по id
         return document.getElementById(y + '_' + x);
     }
@@ -95,24 +94,14 @@ var snakeGame = (function() {
         return document.getElementsByClassName('snake');
     }
 
-    let addSnakeToCell = cell => {
+    let addObjToCell = (cell, obj) => {
         // Строчка className может включать несколько классов, например "class1 class2".
         // Поэтому добавляем пробел.
-        cell.className += ' snake';
+        cell.className += ' ' + obj;
     }
 
-    let addFoodToCell = cell => {
-        // Строчка className может включать несколько классов, например "class1 class2".
-        // Поэтому добавляем пробел.
-        cell.className += ' food';
-    }
-
-    let removeSnakeFromCell = cell => {
-        cell.className = cell.className.replace('snake', '');
-    }
-
-    let removeFoodFromCell = cell => {
-        cell.className = cell.className.replace('food', '');
+    let removeObjFromCell = (cell, obj) => {
+        cell.className = cell.className.replace(obj, '');
     }
 
     let setCellStep = (cell, step) => {
@@ -126,7 +115,7 @@ var snakeGame = (function() {
     }
 
     let setDirection = (x, y) => {
-        //Меняет направление, если аргументами не передается противоположное
+        //Меняет направление, если аргументами не передается противоположное текущему
         dx = (x == -dx) ? dx : x;
         dy = (y == -dy) ? dy : y;
     }
@@ -140,7 +129,7 @@ var snakeGame = (function() {
         let y = Math.round(getRandomNumber(0, HEIGHT - 1));
 
         let foodCell = getCell(x, y);
-        addFoodToCell(foodCell);
+        addObjToCell(foodCell, " food");
     }
 
     // Только этот объект будет доступен извне.
@@ -158,7 +147,6 @@ let timer = setInterval(function() {
         clearInterval(timer);
         alert('Game Over! Score: ' + snakeGame.getScore());
     }
-    refreshScore(snakeGame.getScore());
 }, 300);
 
 
